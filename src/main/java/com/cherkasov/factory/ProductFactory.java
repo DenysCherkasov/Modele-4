@@ -120,26 +120,26 @@ public class ProductFactory {
         LOGGER.info("Fifth robot ({}) starts to work", Thread.currentThread().getName());
         while (countProductAssembly <= 100) {
             int countFuelNeed = RANDOM.nextInt(350, 700);
-            if (availableFuel >= countFuelNeed) {
-                usedFuel += countFuelNeed;
-                availableFuel -= countFuelNeed;
-                LOGGER.info("Fifth robot ({}) used {} fuel, total used fuel: {}",
-                        Thread.currentThread().getName(), countFuelNeed, usedFuel);
-                LOGGER.info("Available fuel {}", availableFuel);
-
-                countProductAssembly += 10;
-                LOGGER.info("Fifth robot ({}) make {} of work",
-                        Thread.currentThread().getName(), countProductAssembly);
+            if (availableFuel < countFuelNeed) {
+                LOGGER.info("There is no fuel for fifth robot ({})",
+                        Thread.currentThread().getName());
                 try {
                     TimeUnit.SECONDS.sleep(1);
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
+                Thread.currentThread().yield();
             } else {
-                LOGGER.info("There is no fuel for fifth robot ({})",
-                        Thread.currentThread().getName());
+                usedFuel += countFuelNeed;
+                availableFuel -= countFuelNeed;
+                LOGGER.info("Fifth robot ({}) used {} fuel, total used fuel: {}",
+                        Thread.currentThread().getName(), countFuelNeed, usedFuel);
+                LOGGER.info("Available fuel {}", availableFuel);
+                countProductAssembly += 10;
+                LOGGER.info("Fifth robot ({}) make {} of work",
+                        Thread.currentThread().getName(), countProductAssembly);
                 try {
-                    TimeUnit.SECONDS.sleep(5);
+                    TimeUnit.SECONDS.sleep(1);
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
